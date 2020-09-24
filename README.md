@@ -6,7 +6,69 @@ fork [https://github.com/CCChieh/IBMYes](https://github.com/CCChieh/IBMYes)
   对应`vmess id`, `ws path`, `alterId`
 * 使用actions, 每周自动更新`v2ray`, 部署到 `IBM Cloud Foundray`.
 
-
+### Vless配置文件代码（与作者原Vmess一样，加入了嗅探功能）
+* 以下开始复制，注意复制全
+```
+{
+  "inbounds": [
+    {
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"]
+      },
+              "port": 8080,
+              "protocol": "vless",
+              "settings": {
+                "decryption": "none",
+                "clients": [
+                  {
+                    "id": "V2_ID"
+                  }
+                ]
+              },
+              "streamSettings": {
+                "network":"ws",
+                "wsSettings": {
+                  "path": "/V2_PATH"
+                }
+              }
+            }
+          ],
+          "outbounds": [
+            {
+              "protocol": "freedom",
+              "settings": {},
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "block"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "block",
+        "protocol": ["bittorrent"]
+      },
+      {
+        "type": "field",
+        "outboundTag": "block",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "127.0.0.0/8",
+          "172.16.0.0/12",
+          "192.168.0.0/16"
+        ]
+      }
+    ]
+  }
+}
+```
 # 配置流程
 
 ### 配置IBM Cloud Fonudray
