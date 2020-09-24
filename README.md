@@ -98,6 +98,20 @@ addEventListener(
   }
 )
 ```
+* 含路径反代代码
+```
+addEventListener(
+"fetch",event => {
+let url=new URL(event.request.url);
+url.hostname="应用程序名.us-south.cf.appdomain.cloud";
+url.pathname ="/你的path路径";
+let request=new Request(url,event.request);
+event. respondWith(
+fetch(request)
+)
+}
+)
+```
 * 点击保存并部署, 这里会给一个网址(比如`cloudflare_workers.dev`), 这个就是 v2ray 客户端要连的地址.
 
 ### 利用Github Actions 自动部署 IBM Cloud Fonudray
